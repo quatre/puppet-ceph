@@ -3,7 +3,7 @@
 #  Copyright (C) Nine Internet Solutions AG
 #
 #  Author: Loic Dachary <loic@dachary.org>
-#  Author: David Gurtner <david@nine.ch>
+#  Author: David Gurtner <aldavud@crimson.ch>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ describe 'ceph::mon' do
   fsid = 'a4807c9a-e76f-4666-a297-6d6cbc922e3a'
   mon_host = '$::ipaddress_eth1'
   # passing it directly as unqoted array is not supported everywhere
-  packages = "[ 'python-ceph', 'ceph-common', 'librados2', 'librbd1', 'libcephfs1' ]"
+  packages = "[ 'python-ceph', 'ceph-common', 'curl', 'librados2', 'librbd1', 'libcephfs1' ]"
 
   releases.each do |release|
 
@@ -71,7 +71,6 @@ describe 'ceph::mon' do
               mon_host => #{mon_host},
               authentication_type => 'none',
             }
-            ->
             ceph::mon { 'a':
               public_addr => #{mon_host},
               authentication_type => 'none',
@@ -129,7 +128,6 @@ describe 'ceph::mon' do
               fsid => '#{fsid}',
               mon_host => #{mon_host},
             }
-            ->
             ceph::mon { 'a':
               public_addr => #{mon_host},
               key => 'AQCztJdSyNb0NBAASA2yPZPuwXeIQnDJ9O8gVw==',
@@ -189,7 +187,6 @@ describe 'ceph::mon' do
               fsid => '#{fsid}',
               mon_host => #{mon_host},
             }
-            ->
             ceph::mon { 'a':
               public_addr => #{mon_host},
               keyring => '#{keyring_path}',
@@ -252,7 +249,6 @@ describe 'ceph::mon' do
                   public_network => '10.11.12.0/24',
                   authentication_type => 'none',
                 }
-                ->
                 ceph::mon { '#{mon}':
                   public_addr => $::ipaddress_eth1,
                   authentication_type => 'none',

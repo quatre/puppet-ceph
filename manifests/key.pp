@@ -16,7 +16,7 @@
 # Author: Ricardo Rocha <ricardo@catalyst.net.nz>
 #
 # Handles ceph keys (cephx), generates keys, creates keyring files, injects
-# keys into or delete keys from the cluster/keyring via ceph and ceph-autotool
+# keys into or delete keys from the cluster/keyring via ceph and ceph-authtool
 # tools.
 #
 ### == Name
@@ -118,7 +118,7 @@ set -ex
 ceph-authtool ${keyring_path} --name '${name}' --add-key '${secret}' ${caps}",
     unless    => "/bin/true # comment to satisfy puppet syntax requirements
 set -ex
-sed -n 'N;/.*${name}.*\\n\\s*key = ${secret}/p' ${keyring_path} | grep ${name}",
+sed -n 'N;\\%.*${name}.*\\n\\s*key = ${secret}%p' ${keyring_path} | grep ${name}",
     require   => [ Package['ceph'], File[$keyring_path], ],
     logoutput => true,
   }
@@ -133,6 +133,8 @@ sed -n 'N;/.*${name}.*\\n\\s*key = ${secret}/p' ${keyring_path} | grep ${name}",
       $inject_keyring_option = " --keyring '${inject_keyring}' "
     }
 
+    Ceph_Config<||> -> Exec["ceph-injectkey-${name}"]
+    Ceph::Mon<||> -> Exec["ceph-injectkey-${name}"]
     exec { "ceph-injectkey-${name}":
       command   => "/bin/true # comment to satisfy puppet syntax requirements
 set -ex
@@ -145,6 +147,5 @@ ceph ${cluster_option} ${inject_id_option} ${inject_keyring_option} auth get ${n
       logoutput => true,
     }
 
-    Ceph::Mon<| cluster == $cluster |> -> Ceph::Key<| cluster == $cluster |>
   }
 }

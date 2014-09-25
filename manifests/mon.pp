@@ -1,6 +1,6 @@
 #
 #   Copyright (C) 2013 Cloudwatt <libre.licensing@cloudwatt.com>
-#   Copyright (C) iWeb Technologies Inc.
+#   Copyright (C) 2013, 2014 iWeb Technologies Inc.
 #   Copyright (C) 2014 Nine Internet Solutions AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 #
 # Author: Loic Dachary <loic@dachary.org>
 # Author: David Moreau Simard <dmsimard@iweb.com>
-# Author: David Gurtner <david@nine.ch>
+# Author: David Gurtner <aldavud@crimson.ch>
 #
 # Installs and configures MONs (ceph monitors)
 ### == Parameters
@@ -42,10 +42,10 @@
 #   key or keyring must be provided.
 #
 # [*key*] Authentication key for [mon.]
-#   Optional. $key and $keyring are mutually exclusives.
+#   Optional. $key and $keyring are mutually exclusive.
 #
 # [*keyring*] Path of the [mon.] keyring file
-#   Optional. $key and $keyring are mutually exclusives.
+#   Optional. $key and $keyring are mutually exclusive.
 #
 define ceph::mon (
   $ensure = present,
@@ -123,6 +123,7 @@ define ceph::mon (
         $public_addr_option = "--public_addr ${public_addr}"
       }
 
+      Ceph_Config<||> ->
       exec { $ceph_mkfs:
         command   => "/bin/true # comment to satisfy puppet syntax requirements
 set -ex

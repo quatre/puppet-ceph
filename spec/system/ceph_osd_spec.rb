@@ -3,7 +3,7 @@
 #  Copyright (C) 2014 Nine Internet Solutions AG
 #
 #  Author: Loic Dachary <loic@dachary.org>
-#  Author: David Gurtner <david@nine.ch>
+#  Author: David Gurtner <aldavud@crimson.ch>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ describe 'ceph::osd' do
   admin_key = 'AQA0TVRTsP/aHxAAFBvntu1dSEJHxtJeFFrRsg=='
   mon_host = '$::ipaddress_eth1'
   # passing it directly as unqoted array is not supported everywhere
-  packages = "[ 'python-ceph', 'ceph-common', 'librados2', 'librbd1', 'libcephfs1' ]"
+  packages = "[ 'python-ceph', 'ceph-common', 'curl', 'librados2', 'librbd1', 'libcephfs1' ]"
 
   purge = <<-EOS
     ceph::mon { 'a': ensure => absent }
@@ -87,16 +87,13 @@ describe 'ceph::osd' do
               mon_host => #{mon_host},
               authentication_type => 'none',
             }
-            ->
             ceph_config {
              'global/osd_journal_size': value => '100';
             }
-            ->
             ceph::mon { 'a':
               public_addr => #{mon_host},
               authentication_type => 'none',
             }
-            ->
             ceph::osd { '#{data}': }
           EOS
 
@@ -148,16 +145,13 @@ describe 'ceph::osd' do
               fsid => '#{fsid}',
               mon_host => #{mon_host},
             }
-            ->
             ceph_config {
              'global/osd_journal_size': value => '100';
             }
-            ->
             ceph::mon { 'a':
               public_addr => #{mon_host},
               key => 'AQCztJdSyNb0NBAASA2yPZPuwXeIQnDJ9O8gVw==',
             }
-            ->
             ceph::key { 'client.admin':
               secret         => '#{admin_key}',
               cap_mon        => 'allow *',
@@ -221,17 +215,14 @@ describe 'ceph::osd' do
               mon_host => #{mon_host},
               authentication_type => 'none',
             }
-            ->
             ceph_config {
              'global/osd_journal_size': value => '100';
             }
-            ->
             ceph::mon { 'a':
               public_addr => #{mon_host},
               key => 'AQCztJdSyNb0NBAASA2yPZPuwXeIQnDJ9O8gVw==',
               authentication_type => 'none',
             }
-            ->
             ceph::osd { '#{data}':
               journal => '/tmp/journal'
             }
@@ -286,16 +277,13 @@ describe 'ceph::osd' do
               mon_host => #{mon_host},
               authentication_type => 'none',
             }
-            ->
             ceph_config {
              'global/osd_journal_size': value => '100';
             }
-            ->
             ceph::mon { 'a':
               public_addr => #{mon_host},
               authentication_type => 'none',
             }
-            ->
             ceph::osd { '/dev/sdb1': }
           EOS
 

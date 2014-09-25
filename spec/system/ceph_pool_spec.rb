@@ -15,7 +15,7 @@
 #   limitations under the License.
 #
 # Author: Ricardo Rocha <ricardo@catalyst.net.nz>
-# Author: David Gurtner <david@nine.ch>
+# Author: David Gurtner <aldavud@crimson.ch>
 #
 require 'spec_helper_system'
 
@@ -35,6 +35,7 @@ describe 'ceph::pool' do
       package { [
          'python-ceph',
          'ceph-common',
+         'curl',
          'librados2',
          'librbd1',
          'libcephfs1',
@@ -55,18 +56,15 @@ describe 'ceph::pool' do
           class { 'ceph::repo':
             release => '#{release}',
           }
-          ->
           class { 'ceph':
             fsid => '#{fsid}',
             mon_host => $::ipaddress_eth0,
             authentication_type => 'none',
           }
-          ->
           ceph::mon { 'a':
             public_addr => $::ipaddress_eth0,
             authentication_type => 'none',
           }
-          ->
           ceph::pool { 'volumes':
             pg_num  => 64,
             pgp_num => 64,
@@ -107,13 +105,11 @@ describe 'ceph::pool' do
           class { 'ceph::repo':
             release => '#{release}',
           }
-          ->
           class { 'ceph':
             fsid => '#{fsid}',
             mon_host => $::ipaddress_eth0,
             authentication_type => 'none',
           }
-          ->
           ceph::mon { 'a':
             public_addr => $::ipaddress_eth0,
             authentication_type => 'none',
@@ -154,15 +150,15 @@ end
 # Local Variables:
 # compile-command: "cd ../..
 #   (
-#     cd .rspec_system/vagrant_projects/one-centos-64-x64
+#     cd .rspec_system/vagrant_projects/one-ubuntu-server-12042-x64
 #     vagrant destroy --force
 #   )
 #   cp -a Gemfile-rspec-system Gemfile
 #   BUNDLE_PATH=/tmp/vendor bundle install --no-deployment
 #   MACHINES=first \
-#   RELEASES=cuttlefish \
+#   RELEASES=dumpling \
 #   RS_DESTROY=no \
-#   RS_SET=one-centos-64-x64 \
+#   RS_SET=one-ubuntu-server-12042-x64 \
 #   BUNDLE_PATH=/tmp/vendor \
 #   bundle exec rake spec:system SPEC=spec/system/ceph_pool_spec.rb &&
 #   git checkout Gemfile

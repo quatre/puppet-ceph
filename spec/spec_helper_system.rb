@@ -1,9 +1,9 @@
 #
-#  Copyright 2013 Cloudwatt <libre-licensing@cloudwatt.com>
+#  Copyright (C) 2013 Cloudwatt <libre.licensing@cloudwatt.com>
 #  Copyright (C) 2014 Nine Internet Solutions AG
 #
 #  Author: Loic Dachary <loic@dachary.org>
-#  Author: David Gurtner <david@nine.ch>
+#  Author: David Gurtner <aldavud@crimson.ch>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
-  # Enable colour
+  # Enable color
   c.tty = true
 
   c.include RSpecSystemPuppet::Helpers

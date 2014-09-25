@@ -1,7 +1,7 @@
 #
 #  Copyright (C) 2014 Nine Internet Solutions AG
 #
-#  Author: David Gurtner <david@nine.ch>
+#  Author: David Gurtner <aldavud@crimson.ch>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ describe 'ceph::profile::base' do
   releases = ENV['RELEASES'] ? ENV['RELEASES'].split : release2version.keys
   machines = ENV['MACHINES'] ? ENV['MACHINES'].split : [ 'first', 'second' ]
   # passing it directly as unqoted array is not supported everywhere
-  packages = "[ 'python-ceph', 'ceph-common', 'librados2', 'librbd1', 'libcephfs1' ]"
+  packages = "[ 'python-ceph', 'ceph-common', 'curl', 'librados2', 'librbd1', 'libcephfs1' ]"
   fsid = 'a4807c9a-e76f-4666-a297-6d6cbc922e3a'
   hieradata_common = '/var/lib/hiera/common.yaml'
   hiera_shared = <<-EOS
